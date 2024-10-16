@@ -3,7 +3,7 @@ MOV R1, #14h	; R1 � um "ponteiro" que diz qual célula do tabuleiro está send
 MOV R2, #45h	; R2 serve como um iterador pra percorrer todo o tabuleiro
 MOV R7, #11H; R7 vai ser usado pra "pintar" o tabuleiro de acordo com o jogador
 
-reiniciaTabuleiro:
+reiniciaTabuleiro: //Função que reinicia o tabuleiro para seu estado inicial
 	MOV @R1, #00h
 	INC R1
 	DJNZ R2, reiniciaTabuleiro
@@ -34,13 +34,13 @@ mainLoop:
 	JNB F0, mainLoop
 	
 ;	+----+----+----+
-;	| 11 | 10 |  9 |	row3
+;	| 11 | 10 |  9 |	linha3
 ;	+----+----+----+
-;	|  8 |  7 |  6 |	row2
+;	|  8 |  7 |  6 |	linha2
 ;	+----+----|----+
-;	|  5 |  4 |  3 |	row1
+;	|  5 |  4 |  3 |	linha1
 ;	+----+----+----+
-;	|  2 |  1 |  0 |	row0
+;	|  2 |  1 |  0 |	linha0
 ;	+----+----+----+
 ;	 col2 col1 col0
 
@@ -87,70 +87,70 @@ achouTecla:
 	SETB F0	; se achou tecla, 'seta' o F0 (como se fosse bool)
 	RET
 
-executaJogada:
+executaJogada: //Função que executa a jogada pretendida pelo jogador
 	MOV A, R6
 	CJNE A, #03, teclaNove
 	MOV DPTR, #47H
 	SJMP pintaCelula
 
-teclaNove:
+teclaNove: //Função que executa a jogada na tecla 9
 	CJNE A, #04, teclaOito
 	MOV DPTR, #46h
 	SJMP pintaCelula
 
-teclaOito:
+teclaOito: //Função que executa a jogada na tecla 8
 	CJNE A, #05, teclaSete
 	MOV DPTR, #45h
 	SJMP pintaCelula
 
-teclaSete:
+teclaSete: //Função que executa a jogada na tecla 7
 	CJNE A, #06, teclaSeis
 	MOV DPTR, #37h
 	SJMP pintaCelula
 
-teclaSeis:
+teclaSeis: //Função que executa a jogada na tecla 6
 	CJNE A, #07, teclaCinco
 	MOV DPTR, #36h
 	SJMP pintaCelula
 
-teclaCinco:
+teclaCinco: //Função que executa a jogada na tecla 5
 	CJNE A, #08, teclaQuatro
 	MOV DPTR, #35h
 	SJMP pintaCelula
 
-teclaQuatro:
+teclaQuatro: //Função que executa a jogada na tecla 4
 	CJNE A, #09, teclaTres
 	MOV DPTR, #046h
 	SJMP pintaCelula
 
-teclaTres:
+teclaTres: //Função que executa a jogada na tecla 3
 	CJNE A, #10, teclaDois
 	MOV DPTR, #27h
 	SJMP pintaCelula
 
-teclaDois:
+teclaDois: //Função que executa a jogada na tecla 2
 	CJNE A, #11, teclaUm
 	MOV DPTR, #26h
 	SJMP pintaCelula
 
-teclaUm:
+teclaUm: //Função que executa a jogada na tecla 1
 	CJNE A, #12, fim		
 	MOV DPTR, #25h
 
-pintaCelula:
+pintaCelula: //Função que demarca a jogada do jogador na posição do tabuleiro
 	MOVX A, @DPTR
 	CJNE A, #00, fim
 	MOV A, R7
 	MOVX @DPTR, A
 	ACALL trocaJogador
 
-trocaJogador:
+trocaJogador: //Função que alterna o turno de cada jogador
 	MOV A, R7
 	CJNE A, #11h, verificaJogador	; se R7 não é "11" verifica se é "22"
 	MOV R7, #22h		; se R7 = "11" troca pra vez do jogador 2
 	SJMP fim
 
-verificaJogador:
+verificaJogador: //Função que alterna o turno de cada jogador
 	CJNE A, #22h, fim		; se o R7 não for "22" encerra a função, pois já está correto
 	MOV R7, #11h		; se R7 = "22"  troca pra vez do jogador 1
 
