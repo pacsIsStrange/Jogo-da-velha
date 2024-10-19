@@ -1,9 +1,10 @@
-MOV R0, #00h	; R0 vai ser usado como variável auxiliar pra guardar o 'input' do usuário no keypad
-MOV R1, #14h	; R1 � um "ponteiro" que diz qual célula do tabuleiro está sendo verificada
+ORG 0000
+MOV R3, #00h	; R3 vai ser usado como variável auxiliar pra guardar o 'input' do usuário no keypad
+MOV R1, #14h	; R1 ? um "ponteiro" que diz qual célula do tabuleiro está sendo verificada
 MOV R2, #45h	; R2 serve como um iterador pra percorrer todo o tabuleiro
 MOV R7, #11H; R7 vai ser usado pra "pintar" o tabuleiro de acordo com o jogador
 
-reiniciaTabuleiro: //Função que reinicia o tabuleiro para seu estado inicial
+reiniciaTabuleiro: ; Função que reinicia o tabuleiro para seu estado inicial
 	MOV @R1, #00h
 	INC R1
 	DJNZ R2, reiniciaTabuleiro
@@ -32,6 +33,9 @@ main:
 mainLoop:
 	ACALL leituraTeclado
 	JNB F0, mainLoop
+	ACALL executaJogada
+	SJMP mainLoop
+	
 	
 ;	+----+----+----+
 ;	| 11 | 10 |  9 |	linha3
@@ -45,114 +49,115 @@ mainLoop:
 ;	 col2 col1 col0
 
 leituraTeclado:
+	CLR F0
 	MOV R6, #00h	; R6 vai guardar qual tecla foi pressionada
 
 ;	scan linha 0
 	MOV P0, #0FFh
 	CLR P0.0	
 	CALL scanCol
-	JB F0, fim	; se a tecla foi encontrada, retorna da fun��o
+	JB F0, fim	; se a tecla foi encontrada, retorna da fun??o
 	
 ;	scan linha 1
 	SETB P0.0	
 	CLR P0.1	
 	CALL scanCol
-	JB F0, fim	; se a tecla foi encontrada, retorna da fun��o
+	JB F0, fim	; se a tecla foi encontrada, retorna da fun??o
 	
 ;	scan linha 2
 	SETB P0.1	
 	CLR P0.2	
 	CALL scanCol
-	JB F0, fim	; se a tecla foi encontrada, retorna da fun��o
+	JB F0, fim	; se a tecla foi encontrada, retorna da fun??o
 	
 ;	scan linha 3
 	SETB P0.2	
 	CLR P0.3	
 	CALL scanCol
-	JB F0, fim	; se a tecla foi encontrada, retorna da fun��o
 	
 fim:
 	RET
 
 scanCol:
-	JNB P0.4, achouTecla	; se a coluna 0 est� limpa, achou a tecla na coluna 0
-	INC R6	; move a busca para a pr�xima coluna
-	JNB P0.4, achouTecla	; se a coluna 1 est� limpa, achou a tecla na coluna 1
-	INC R6	; move a busca para a pr�xima coluna
-	JNB P0.4, achouTecla	; se a coluna 2 est� limpa, achou a tecla na coluna 2
-	INC R6	; move a busca para a pr�xima coluna
+	JNB P0.4, achouTecla	; se a coluna 0 est? limpa, achou a tecla na coluna 0
+	INC R6	; move a busca para a pr?xima coluna
+	JNB P0.5, achouTecla	; se a coluna 1 est? limpa, achou a tecla na coluna 1
+	INC R6	; move a busca para a pr?xima coluna
+	JNB P0.6, achouTecla	; se a coluna 2 est? limpa, achou a tecla na coluna 2
+	INC R6	; move a busca para a pr?xima coluna
 	RET	; retorna da subrotina sem ter encontrado a tecla
 
 achouTecla:
 	SETB F0	; se achou tecla, 'seta' o F0 (como se fosse bool)
 	RET
 
-executaJogada: //Função que executa a jogada pretendida pelo jogador
+executaJogada: ; Função que executa a jogada pretendida pelo jogador
 	MOV A, R6
 	CJNE A, #03, teclaNove
-	MOV DPTR, #47H
+	MOV R0, #47h
 	SJMP pintaCelula
 
-teclaNove: //Função que executa a jogada na tecla 9
+teclaNove: ; Função que executa a jogada na tecla 9
 	CJNE A, #04, teclaOito
-	MOV DPTR, #46h
+	MOV R0, #46h
 	SJMP pintaCelula
 
-teclaOito: //Função que executa a jogada na tecla 8
+teclaOito: ; Função que executa a jogada na tecla 8
 	CJNE A, #05, teclaSete
-	MOV DPTR, #45h
+	MOV R0, #45h
 	SJMP pintaCelula
 
-teclaSete: //Função que executa a jogada na tecla 7
+teclaSete: ; Função que executa a jogada na tecla 7
 	CJNE A, #06, teclaSeis
-	MOV DPTR, #37h
+	MOV R0, #37h
 	SJMP pintaCelula
 
-teclaSeis: //Função que executa a jogada na tecla 6
+teclaSeis: ; Função que executa a jogada na tecla 6
 	CJNE A, #07, teclaCinco
-	MOV DPTR, #36h
+	MOV R0, #36h
 	SJMP pintaCelula
 
-teclaCinco: //Função que executa a jogada na tecla 5
+teclaCinco: ; Função que executa a jogada na tecla 5
 	CJNE A, #08, teclaQuatro
-	MOV DPTR, #35h
+	MOV R0, #35h
 	SJMP pintaCelula
 
-teclaQuatro: //Função que executa a jogada na tecla 4
+teclaQuatro: ; Função que executa a jogada na tecla 4
 	CJNE A, #09, teclaTres
-	MOV DPTR, #046h
+	MOV R0, #027h
 	SJMP pintaCelula
 
-teclaTres: //Função que executa a jogada na tecla 3
-	CJNE A, #10, teclaDois
-	MOV DPTR, #27h
+teclaTres: ; Função que executa a jogada na tecla 3
+	CJNE A, #0Ah, teclaDois
+	MOV R0, #26h
 	SJMP pintaCelula
 
-teclaDois: //Função que executa a jogada na tecla 2
-	CJNE A, #11, teclaUm
-	MOV DPTR, #26h
+teclaDois: ; Função que executa a jogada na tecla 2
+	CJNE A, #0Bh, teclaUm
+	MOV R0, #25h
 	SJMP pintaCelula
 
-teclaUm: //Função que executa a jogada na tecla 1
-	CJNE A, #12, fim		
-	MOV DPTR, #25h
+teclaUm: ; Função que executa a jogada na tecla 1
+	CJNE A, #0Ch, fim		
+	MOV R0, #25h
 
-pintaCelula: //Função que demarca a jogada do jogador na posição do tabuleiro
-	MOVX A, @DPTR
-	CJNE A, #00, fim
+pintaCelula: ; Função que demarca a jogada do jogador na posição do tabuleiro
+	MOV A, @R0
+	CJNE A, #0, fim
 	MOV A, R7
-	MOVX @DPTR, A
+	MOV @R0, A
 	ACALL trocaJogador
 
-trocaJogador: //Função que alterna o turno de cada jogador
+trocaJogador: ; Função que alterna o turno de cada jogador
 	MOV A, R7
 	CJNE A, #11h, verificaJogador	; se R7 não é "11" verifica se é "22"
 	MOV R7, #22h		; se R7 = "11" troca pra vez do jogador 2
 	SJMP fim
 
-verificaJogador: //Função que alterna o turno de cada jogador
+verificaJogador: ; Função que alterna o turno de cada jogador
 	CJNE A, #22h, fim		; se o R7 não for "22" encerra a função, pois já está correto
 	MOV R7, #11h		; se R7 = "22"  troca pra vez do jogador 1
+	RET
 
 lcd_init:
 
@@ -336,7 +341,6 @@ delay:
 	MOV R7, #50
 	DJNZ R7, $
 	RET
-
 
 
 
