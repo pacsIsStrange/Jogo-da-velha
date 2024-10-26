@@ -223,7 +223,7 @@ verificaColuna2:
  	MOV R0, #26h
  	MOV A, @R0
  	CJNE A, #0, verificaColuna3
- 	SJMP verficaColuna4
+ 	SJMP verificaColuna4
        
 verificaColuna3:
  	MOV R1, #36h
@@ -253,7 +253,7 @@ verificaDiagonal0:
  	MOV R0, #25h
  	MOV A, @R0
  	CJNE A, #0, verificaDiagonal1
- 	SJMP verficiaDiagonal2
+ 	SJMP verficaDiagonal2
        
       verificaDiagonal1:
  	MOV R1, #36h
