@@ -51,6 +51,7 @@ mainLoop:
        
 leituraTeclado:
  	CLR F0
+	MOV P0, #11111111b
  	MOV R6, #03h	; R6 vai guardar qual tecla foi pressionada
        
       ;	scan linha 1
