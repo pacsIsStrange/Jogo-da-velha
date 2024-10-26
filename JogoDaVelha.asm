@@ -253,7 +253,7 @@ verificaDiagonal0:
  	MOV R0, #25h
  	MOV A, @R0
  	CJNE A, #0, verificaDiagonal1
- 	SJMP verficaDiagonal2
+ 	SJMP verificaDiagonal2
        
       verificaDiagonal1:
  	MOV R1, #36h
