@@ -178,28 +178,37 @@ verificaLinha1:
  	MOV R0, #35h
  	MOV A, @R0
  	CJNE A, #0, verificaLinha2
- 	LJMP fim
-       
+ 	SJMP verificaLinha3
 
 verificaLinha2:
  	MOV R1, #36h
  	MOV B, @R1
- 	CJNE A, B, verificaColuna0
+ 	CJNE A, B, verificaLinha3
  	INC R1
  	MOV B, @R1
- 	CJNE A, B, verificaColuna0
+ 	CJNE A, B, verificaLinha3
  	LJMP verificaVencedor
-      	
+
+verificaLinha3:
  	MOV R0, #45h
  	MOV A, @R0
- 	CJNE A, #0, verificaColuna0
- 	LJMP fim
+ 	CJNE A, #0, verificaLinha4
+ 	SJMP verificaColuna0
+
+verificaLinha4:
+	MOV R1, #46h
+	MOV B, @R1
+	CJNE A, B, verificaColuna0
+	INC R1
+	MOV B, @R1
+	CJNE A, b, verificaColuna0
+	LJMP verificaVencedor
        
 verificaColuna0:
  	MOV R0, #25h
  	MOV A, @R0
  	CJNE A, #0, verificaColuna1
- 	LJMP fim
+ 	SJMP verificaColuna2
        
 verificaColuna1:
  	MOV R1, #35h
@@ -214,7 +223,7 @@ verificaColuna2:
  	MOV R0, #26h
  	MOV A, @R0
  	CJNE A, #0, verificaColuna3
- 	LJMP fim
+ 	SJMP verficaColuna4
        
 verificaColuna3:
  	MOV R1, #36h
@@ -244,7 +253,7 @@ verificaDiagonal0:
  	MOV R0, #25h
  	MOV A, @R0
  	CJNE A, #0, verificaDiagonal1
- 	LJMP fim
+ 	SJMP verficiaDiagonal2
        
       verificaDiagonal1:
  	MOV R1, #36h
