@@ -311,7 +311,11 @@ START:
 	MOV A, #'i'
 	ACALL sendCharacter
 	MOV A, #'a'
+	ACALL sendCharacter
+	MOV A, #' '
 	ACALL sendCharacter		
+	MOV A, R4
+	ACALL displayValue		
 	ACALL retornaCursor
 	JMP $
 
@@ -504,3 +508,31 @@ delay:
 	MOV R6, #50
 	DJNZ R6, $
 	RET
+
+displayValue:
+    ; Assume que o valor em A é 11 ou 22
+    CJNE R4, #11h, show22   ; Se A não for 11, vai mostrar 22
+    ; Para 11:
+    ; Convertendo e enviando o primeiro dígito (1)
+    MOV A, #1
+    ADD A, #30h           ; Converter para ASCII
+    ACALL sendCharacter
+
+    ; Convertendo e enviando o segundo dígito (1)
+    MOV A, #1
+    ADD A, #30h           ; Converter para ASCII
+    ACALL sendCharacter
+    RET
+
+show22:
+    ; Para 22:
+    ; Convertendo e enviando o primeiro dígito (2)
+    MOV A, #2
+    ADD A, #30h           ; Converter para ASCII
+    ACALL sendCharacter
+
+    ; Convertendo e enviando o segundo dígito (2)
+    MOV A, #2
+    ADD A, #30h           ; Converter para ASCII
+    ACALL sendCharacter
+    RET
