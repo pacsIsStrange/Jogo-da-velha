@@ -296,7 +296,7 @@ atalhoFim:
 
 START:
 	acall lcd_init
-	mov A, #06h
+	mov A, #04h
 	ACALL posicionaCursor 
 	MOV A, #'V'
 	ACALL sendCharacter	; send data in A to LCD module
@@ -427,7 +427,7 @@ sendCharacter:
 ;|--------------------------------------------------------------------------------------|
 posicionaCursor:
 	CLR RS	         ; clear RS - indicates that instruction is being sent to module
-	SETB P1.7		    ; |
+	SETB P1.4	    ; |
 	MOV C, ACC.6		; |
 	MOV P1.6, C			; |
 	MOV C, ACC.5		; |
@@ -503,4 +503,4 @@ clearDisplay:
 delay:
 	MOV R6, #50
 	DJNZ R6, $
-	SJMP $
+	RET
