@@ -602,7 +602,7 @@ show22:
 
 ```mermaid
 graph TD;
-    -->B;
+    A-->B;
     A-->C;
     B-->D;
     C-->D;
