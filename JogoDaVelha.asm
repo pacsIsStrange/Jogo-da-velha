@@ -1,8 +1,8 @@
 ORG 0000
 MOV R3, #00h	; R3 vai ser usado como variável auxiliar pra guardar o 'input' do usuário no keypad
-MOV R1, #14h	; R1 ? um "ponteiro" que diz qual célula do tabuleiro está sendo verificada
+MOV R1, #14h	; R1 e um "ponteiro" que diz qual célula do tabuleiro está sendo verificada
 MOV R2, #45h	; R2 serve como um iterador pra percorrer todo o tabuleiro
-MOV R7, #11H; R7 vai ser usado pra "pintar" o tabuleiro de acordo com o jogador
+MOV R7, #11H	; R7 vai ser usado pra "pintar" o tabuleiro de acordo com o jogador
        
 reiniciaTabuleiro: ; Função que reinicia o tabuleiro para seu estado inicial
  	MOV @R1, #00h
@@ -13,7 +13,7 @@ desenhaTabuleiro:	; desenha as "bordas" do tabuleiro
  	MOV 14h, #0FFh
  	MOV 15h, #0FFh
  	MOV 16h, #0FFh
- 	MOV 17h, #0FFh
+	MOV 17h, #0FFh
  	MOV 18h, #0FFh
  	MOV 24h, #0FFh
  	MOV 28h, #0FFh
@@ -27,9 +27,6 @@ desenhaTabuleiro:	; desenha as "bordas" do tabuleiro
  	MOV 57h, #0FFh
  	MOV 58h, #0FFh
        
-       
-main:
-      	;ACALL lcd_init
 mainLoop:
  	ACALL leituraTeclado
  	JNB F0, mainLoop
@@ -39,8 +36,7 @@ mainLoop:
 	CJNE A, #01, mainLoop
 	ACALL START
  	SJMP mainLoop
-      	
-      	
+
       ;	+----+----+----+
       ;	| 11 | 10 |  9 |	linha3
       ;	+----+----+----+
@@ -51,183 +47,190 @@ mainLoop:
       ;	|  2 |  1 |  0 |	linha0
       ;	+----+----+----+
       ;	 col2 col1 col0
-       
+
 leituraTeclado:
  	CLR F0
 	MOV P0, #11111111b
  	MOV R6, #03h	; R6 vai guardar qual tecla foi pressionada
-       
-      ;	scan linha 1
- 	SETB P0.0	
- 	CLR P0.1	
- 	CALL scanCol
- 	JB F0, fim	; se a tecla foi encontrada, retorna da fun??o
-      	
-      ;	scan linha 2
- 	SETB P0.1	
- 	CLR P0.2	
- 	CALL scanCol
- 	JB F0, fim	; se a tecla foi encontrada, retorna da fun??o
-      	
-      ;	scan linha 3
- 	SETB P0.2	
 
- 	CLR P0.3	
+      ;	scan linha 1
+ 	SETB P0.0
+ 	CLR P0.1
  	CALL scanCol
-       
+ 	JB F0, fim	; se a tecla foi encontrada, retorna da fun??o
+
+      ;	scan linha 2
+	SETB P0.1
+ 	CLR P0.2
+ 	CALL scanCol
+ 	JB F0, fim	; se a tecla foi encontrada, retorna da fun??o
+
+      ;	scan linha 3
+ 	SETB P0.2
+
+ 	CLR P0.3
+ 	CALL scanCol
+
 fim:
  	RET
-       
+
 scanCol:
- 	JNB P0.4, achouTecla	; se a coluna 0 est? limpa, achou a tecla na coluna 0
- 	INC R6	; move a busca para a pr?xima coluna
- 	JNB P0.5, achouTecla	; se a coluna 1 est? limpa, achou a tecla na coluna 1
- 	INC R6	; move a busca para a pr?xima coluna
- 	JNB P0.6, achouTecla	; se a coluna 2 est? limpa, achou a tecla na coluna 2
- 	INC R6	; move a busca para a pr?xima coluna
+ 	JNB P0.4, achouTecla	; se a coluna 0 esta limpa, achou a tecla na coluna 0
+ 	INC R6	; move a busca para a proxima coluna
+ 	JNB P0.5, achouTecla	; se a coluna 1 esta limpa, achou a tecla na coluna 1
+ 	INC R6	; move a busca para a proxima coluna
+ 	JNB P0.6, achouTecla	; se a coluna 2 esta limpa, achou a tecla na coluna 2
+ 	INC R6	; move a busca para a proxima coluna
  	RET	; retorna da subrotina sem ter encontrado a tecla
-       
+
 achouTecla:
  	SETB F0	; se achou tecla, 'seta' o F0 (como se fosse bool)
  	RET
-       
-executaJogada: ; Função que executa a jogada pretendida pelo jogador
+
+executaJogada:	; Função que executa a jogada pretendida pelo jogador
  	MOV A, R6
- 	CJNE A, #03, teclaNove
+ 	CJNE A, #03, teclaNove	; pula para a proxima se a tecla pressionada NAO foi 9
  	MOV R0, #47h
  	SJMP pintaCelula
-       
-teclaNove: ; Função que executa a jogada na tecla 9
- 	CJNE A, #04, teclaOito
+
+teclaNove:	; repete a verificacao acima para a telca 8
+ 	CJNE A, #04, teclaOito	; pula para a proxima se a tecla pressionada NAO foi 8
  	MOV R0, #46h
  	SJMP pintaCelula
-       
-teclaOito: ; Função que executa a jogada na tecla 8
- 	CJNE A, #05, teclaSete
+
+teclaOito:	; repete a verificacao acima para a tecla 7
+ 	CJNE A, #05, teclaSete	; pula para a proxima se a tecla pressionada NAO foi 7
  	MOV R0, #45h
  	SJMP pintaCelula
        
-teclaSete: ; Função que executa a jogada na tecla 7
- 	CJNE A, #06, teclaSeis
+teclaSete:	; repete a verificacao acima para a tecla 6
+ 	CJNE A, #06, teclaSeis	; pula para a proxima se a tecla presionada NAO foi 6
  	MOV R0, #37h
  	SJMP pintaCelula
        
-teclaSeis: ; Função que executa a jogada na tecla 6
- 	CJNE A, #07, teclaCinco
+teclaSeis:	; [...] para a tecla 5
+ 	CJNE A, #07, teclaCinco	; [...] NAO foi 5
  	MOV R0, #36h
  	SJMP pintaCelula
        
-teclaCinco: ; Função que executa a jogada na tecla 5
- 	CJNE A, #08, teclaQuatro
+teclaCinco:	; [...] para a tecla 4
+ 	CJNE A, #08, teclaQuatro;[...] NAO foi 4
  	MOV R0, #35h
  	SJMP pintaCelula
        
-teclaQuatro: ; Função que executa a jogada na tecla 4
- 	CJNE A, #09, teclaTres
+teclaQuatro:	;[...] para a tecla 3
+ 	CJNE A, #09, teclaTres	;[...] NAO foi 3
  	MOV R0, #027h
  	SJMP pintaCelula
        
-teclaTres: ; Função que executa a jogada na tecla 3
- 	CJNE A, #0Ah, teclaDois
+teclaTres:	;[...] para a tecla 2
+ 	CJNE A, #0Ah, teclaDois	;[...] NAO foi 2
  	MOV R0, #26h
  	SJMP pintaCelula
        
-teclaDois: ; Função que executa a jogada na tecla 2
- 	CJNE A, #0Bh, teclaUm
+teclaDois:	;[...] para a tecla 1
+ 	CJNE A, #0Bh, teclaUm	;[...] NAO foi 1
  	MOV R0, #25h
  	SJMP pintaCelula
        
-teclaUm: ; Função que executa a jogada na tecla 1
- 	CJNE A, #0Ch, fim		
- 	MOV R0, #25h
-       
-pintaCelula: ; Função que demarca a jogada do jogador na posição do tabuleiro
- 	MOV A, @R0
- 	CJNE A, #0, fim
- 	MOV A, R7
- 	MOV @R0, A
- 	ACALL trocaJogador
+pintaCelula:	; pinta o endereco da memoria correspondente ao input do jogador no teclado
+ 	MOV A, @R0	; move o valor que esta guardado na posicao correspondente ao input do jogador
+ 	CJNE A, #0, fim	; se o valor nao for 0 (ou seja, a posicao ja foi preenchida), retorna da funcao para receber outro input do usuario
+ 	MOV A, R7	; move o numero do jogador de quem e a vez para o acumulador
+ 	MOV @R0, A	; pinta a celula com o numero do jogador
+ 	ACALL trocaJogador	; depois de pintar a celula, troca a vez do jogador
  	RET
        
-trocaJogador: ; Função que alterna o turno de cada jogador
- 	MOV A, R7
- 	CJNE A, #11h, trocaParaJogador1  ; Se não for 11h, troque para jogador 1
- 	MOV R7, #22h		; Se R7 = 11h, troca pra jogador 2
+trocaJogador:	; funcao que vai alternar entre o numero dos jogadores para "trocar a vez"
+ 	MOV A, R7	; R7 aqui esta guardando o numero do jogador que fez a ultima jogada (11 ou 22)
+ 	CJNE A, #11h, trocaParaJogador1	; se o ultimo a jogar foi o jogador 2, troca para a vez do jogador 1
+ 	MOV R7, #22h	; se o ultimo a jogar nao foi o jogador 2, troca para a vez dele
  	SJMP fim
        
 trocaParaJogador1:
- 	MOV R7, #11h		; Se R7 = 22h, troca pra jogador 1
+	MOV R7, #11h	; define o jogador da vez como o jogador 1
  	RET
        
 procuraVitoria:
-; ao final da execução dessa subrotina, R4 guardará o jogador vencedor, caso
-; haja um vencedor, além disso, R5 guardará "1" quando houver um vencedor
+; ao final da execução dessa subrotina, R4 guardará o numero do jogador vencedor, caso haja um vencedor
+; além disso, R5 guardará "1" se houver um vencedor
  	MOV R4, #00h
- 	MOV R0, #25h
- 	MOV A, @R0
- 	CJNE A, #0, verificaLinha0
- 	SJMP verificaLinha1
-       
-verificaLinha0:
- 	MOV R1, #26h
- 	MOV B, @R1
- 	CJNE A, B, verificaLinha1
- 	INC R1
- 	MOV B, @R1
- 	CJNE A, B, verificaLinha1
- 	LJMP verificaVencedor
-       
-verificaLinha1:	
- 	MOV R0, #35h
- 	MOV A, @R0
- 	CJNE A, #0, verificaLinha2
- 	SJMP verificaLinha3
 
+; inicio da verificacao para a linha [25 26 27]
+ 	MOV R0, #25h
+ 	MOV A, @R0	; guarda o valor armazenado no endereco 25 em A
+ 	CJNE A, #0, verificaLinha0	; se o endereco nao esta vazio, continua a verificacao da linha
+ 	SJMP verificaLinha1	; se o endereco esta vazio, pula para a verificacao da proxima linha [35 36 37]
+       
+; etapa "0" da verificacao de linhas
+verificaLinha0:	
+ 	MOV R1, #26h
+ 	MOV B, @R1	; guarda o valor armazenado no endereco 26 em B
+ 	CJNE A, B, verificaLinha1	; se A e B nao sao iguais, pula para a verificacao da proxima linha
+ 	INC R1
+ 	MOV B, @R1	; guarda o valor armazenado no endereco 27 em B
+ 	CJNE A, B, verificaLinha1	; se A e B nao sao iguais, pula para a verificacao da proxima linha
+ 	LJMP verificaVencedor	; se A e B sao iguais em ambas as comparacoes, houve vitoria
+       
+; etapa "1" da verificacao de linhas
+verificaLinha1:	; inicio da verificacao para a linha [35 36 37]
+ 	MOV R0, #35h
+ 	MOV A, @R0	; guarda o valor armazenado no endereco 35 em A
+ 	CJNE A, #0, verificaLinha2	; se o endereco nao esta vazio, continua a verificaacao da linha
+ 	SJMP verificaLinha3	; se o endereco esta vazio, pula para a verificacao da proxima linha
+
+; etapa "2" da verificacao de linhas
 verificaLinha2:
  	MOV R1, #36h
- 	MOV B, @R1
- 	CJNE A, B, verificaLinha3
+ 	MOV B, @R1	; guarda o valor armazenado no endereco 36 em B
+ 	CJNE A, B, verificaLinha3	; se A e B nao sao iguais, pula para a verificacao da proxima linha
  	INC R1
- 	MOV B, @R1
- 	CJNE A, B, verificaLinha3
- 	LJMP verificaVencedor
+ 	MOV B, @R1	; guarda o valor armazenado no endereco 37 em B
+ 	CJNE A, B, verificaLinha3	; se A e B nao sao iguais, pula para a verificacao da proxima linha
+ 	LJMP verificaVencedor	; se A e B sao iguais em ambas as comparacoes, houve vitoria
 
-verificaLinha3:
+; etapa "3" da verificacao de linhas
+verificaLinha3:	; inicio da verificacao para a linha [45 46 47]
  	MOV R0, #45h
- 	MOV A, @R0
- 	CJNE A, #0, verificaLinha4
- 	SJMP verificaColuna0
+ 	MOV A, @R0	; guarda o valor armazenado no endereco 45 em A
+ 	CJNE A, #0, verificaLinha4	; se o endereco nao esta vazio, continua a verificacao da linha
+ 	SJMP verificaColuna0	; se o endereco esta vazio, pula para a verificacao da primeira coluna [25|35|45]
 
+; etapa "4" da verificacao de linhas
 verificaLinha4:
 	MOV R1, #46h
-	MOV B, @R1
-	CJNE A, B, verificaColuna0
+	MOV B, @R1	; guarda o valor armazenado no endereco 46 em B
+	CJNE A, B, verificaColuna0	; se A e B nao sao iguais, pula para a verificacao da primeira coluna
 	INC R1
-	MOV B, @R1
-	CJNE A, b, verificaColuna0
-	LJMP verificaVencedor
+	MOV B, @R1	; guarda o valor armazenado no endereco 47 em B
+	CJNE A, B, verificaColuna0	; se A e B nao sao iguais, pula para a verificacao da primeira coluna
+	LJMP verificaVencedor	; se A e B sao iguas em ambas as comparacoes, houve vitoria
        
-verificaColuna0:
+; etapa "0" da verificacao de colunas
+verificaColuna0:	; inicio da verificacao da coluna [25|35|45]
  	MOV R0, #25h
- 	MOV A, @R0
- 	CJNE A, #0, verificaColuna1
- 	SJMP verificaColuna2
+ 	MOV A, @R0	; guarda o valor armazenado no endereco 25 em A
+ 	CJNE A, #0, verificaColuna1	; se o endereco nao esta vazio, continua a verificacao da coluna
+ 	SJMP verificaColuna2	; se o endereco esta vazio, pula para a verificacao da proxima coluna
        
+; etapa "1" da verificacao de colunas
 verificaColuna1:
  	MOV R1, #35h
- 	MOV B, @R1
- 	CJNE A, B, verificaColuna2
+ 	MOV B, @R1	; guarda o valor armazenado no endereco 35 em B
+ 	CJNE A, B, verificaColuna2	; se A e B nao sao iguais, pula para a verificacao da proxima coluna
  	MOV R1, #45h
- 	MOV B, @R1
- 	CJNE A, B, verificaColuna2
+ 	MOV B, @R1	; guarda o valor armazenado no endereco 45 em B
+ 	CJNE A, B, verificaColuna2	; se A e B nao sao iguais, pula para a verificacao da proxima coluna
  	LJMP verificaVencedor
       	
-verificaColuna2:
+; etapa "0" da verificacao de colunas
+verificaColuna2:	; inicio da verificacao da coluna [26|36|46]
  	MOV R0, #26h
- 	MOV A, @R0
- 	CJNE A, #0, verificaColuna3
- 	SJMP verificaColuna4
+ 	MOV A, @R0	; guarda o valor armazenado no endereco 26 em A
+ 	CJNE A, #0, verificaColuna3 ; se o endereco nao esta vazio, continua a verificacao da coluna
+ 	SJMP verificaColuna4	; se o endereco esta vazio, pula para a verificacao da proxima coluna
        
+; etapa "0" da verificacao de colunas
 verificaColuna3:
  	MOV R1, #36h
  	MOV B, @R1
@@ -237,12 +240,14 @@ verificaColuna3:
  	CJNE A, B, verificaColuna4
  	LJMP verificaVencedor
        
+; etapa "0" da verificacao de colunas
 verificaColuna4:
  	MOV R0, #27h
  	MOV A, @R0
  	CJNE A, #0, verificaColuna5
  	LJMP fim
        
+; etapa "0" da verificacao de colunas
 verificaColuna5:
  	MOV R1, #37h
  	MOV B, @R1
