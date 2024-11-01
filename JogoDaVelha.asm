@@ -221,74 +221,77 @@ verificaColuna1:
  	MOV R1, #45h
  	MOV B, @R1	; guarda o valor armazenado no endereco 45 em B
  	CJNE A, B, verificaColuna2	; se A e B nao sao iguais, pula para a verificacao da proxima coluna
- 	LJMP verificaVencedor
+ 	LJMP verificaVencedor	; se A e B sao iguas em ambas as comparacoes, houve vitoria
       	
-; etapa "0" da verificacao de colunas
+; etapa "2" da verificacao de colunas
 verificaColuna2:	; inicio da verificacao da coluna [26|36|46]
  	MOV R0, #26h
  	MOV A, @R0	; guarda o valor armazenado no endereco 26 em A
  	CJNE A, #0, verificaColuna3 ; se o endereco nao esta vazio, continua a verificacao da coluna
  	SJMP verificaColuna4	; se o endereco esta vazio, pula para a verificacao da proxima coluna
        
-; etapa "0" da verificacao de colunas
+; etapa "3" da verificacao de colunas
 verificaColuna3:
  	MOV R1, #36h
- 	MOV B, @R1
- 	CJNE A, B, verificaColuna4
+ 	MOV B, @R1	; guarda o valor armazenado no endereco 36 em B
+ 	CJNE A, B, verificaColuna4	; se A e B nao sao iguais, pula para a verificacao da proxima coluna
  	MOV R1, #46h
- 	MOV B, @R1
- 	CJNE A, B, verificaColuna4
- 	LJMP verificaVencedor
+ 	MOV B, @R1	; guarda o valor armazenado no endereco 46 em B
+ 	CJNE A, B, verificaColuna4	; se A e B nao sao iguais, pula para a verificacao da proxima coluna
+ 	LJMP verificaVencedor	; se A e B sao iguas em ambas as comparacoes, houve vitoria
        
-; etapa "0" da verificacao de colunas
-verificaColuna4:
+; etapa "4" da verificacao de colunas
+verificaColuna4:	; inicio da verificacao da coluna [27|37|47]
  	MOV R0, #27h
- 	MOV A, @R0
- 	CJNE A, #0, verificaColuna5
- 	LJMP fim
+ 	MOV A, @R0	; guarda o valor armazenado no endereco 27 em A
+ 	CJNE A, #0, verificaColuna5	; se o endereco nao esta vazio, continua a verificacao da coluna
+ 	LJMP fim	; se o endereco está vazio, retorna da função porque é impossível que haja vitória nessas condições 
        
-; etapa "0" da verificacao de colunas
+; etapa "5" da verificacao de colunas
 verificaColuna5:
  	MOV R1, #37h
- 	MOV B, @R1
- 	CJNE A, B, verificaDiagoNal0
+ 	MOV B, @R1	; guarda o valor armazenado no endereco 37 em B
+ 	CJNE A, B, verificaDiagoNal0	; se A e B nao sao iguais, pula para a verificacao da proxima coluna
  	MOV R1, #47h
- 	MOV B, @R1
- 	CJNE A, B, verificaDiagonal0
- 	LJMP verificaVencedor
-       
-verificaDiagonal0:
+ 	MOV B, @R1	; guarda o valor armazenado no endereco 47 em B
+ 	CJNE A, B, verificaDiagonal0	; se A e B nao sao iguais, pula para a verificacao da primeira diagonal
+ 	LJMP verificaVencedor	; se A e B sao iguas em ambas as comparacoes, houve vitoria
+
+; etapa "0" da verificacao de diagionais
+verificaDiagonal0:	; inicio da verificacao da diagonal [25/36/47]
  	MOV R0, #25h
- 	MOV A, @R0
- 	CJNE A, #0, verificaDiagonal1
- 	SJMP verificaDiagonal2
-       
-      verificaDiagonal1:
+ 	MOV A, @R0	; guarda o valor armazenado no endereco 25 em A
+ 	CJNE A, #0, verificaDiagonal1	; se o endereco nao esta vazio, continua a verificacao da diagonal
+ 	SJMP verificaDiagonal2	; se o endereco esta vazio, pula para a verificacao da proxima diagonal
+
+; etapa "1" da verificacao de diagonais
+verificaDiagonal1:
  	MOV R1, #36h
- 	MOV B, @R1
- 	CJNE A, B, verificaDiagonal2
+ 	MOV B, @R1	; guarda o valor armazenado no endereco 36 em B
+ 	CJNE A, B, verificaDiagonal2	; se A e B nao sao iguais, pula para a verificacao da proxima diagonal
  	MOV R1, #47h
- 	MOV B, @R1
- 	CJNE A, B, verificaDiagonal2
- 	LJMP verificaVencedor
-       
-verificaDiagonal2:
+ 	MOV B, @R1	; guarda o valor armazenado no endereco 47 emm B
+ 	CJNE A, B, verificaDiagonal2	; se A e B nao sao iguais, pula a verificacao da proxima diagonal
+ 	LJMP verificaVencedor	; se A e B sao iguas em ambas as comparacoes, houve vitoria
+
+; etapa "2" da verificacao de diagonais
+verificaDiagonal2:	; inicio de verificacao da diagonal [27/36/45]
  	MOV R0, #27h
- 	MOV A, @R0
- 	CJNE A, #0, verificaDiagonal3
- 	LJMP fim
+ 	MOV A, @R0	; guarda o valor armazenado no endereco 27 em A
+ 	CJNE A, #0, verificaDiagonal3	; se o endereco nao esta vazio, continua a verificacao da diagonal
+ 	LJMP fim	; se o endereco esta vazio, retorna da função, pois não há mais o que verificar
        
 verificaDiagonal3:
  	MOV R1, #36h
- 	MOV B, @R1
- 	CJNE A, B, atalhoFim
+ 	MOV B, @R1	; guarda o valor armazenado no endereco 36 em B
+ 	CJNE A, B, atalhoFim	; se A e B nao sao iguais, retorna da função, pois não há mais o que verificar
  	MOV R1, #45h
- 	MOV B, @R1
- 	CJNE A, B, atalhoFim
+ 	MOV B, @R1	; guarda o valor armazenado no endereco 45 em B
+ 	CJNE A, B, atalhoFim	; se A e B nao sao iguais, retorna da função, pois não há mais o que verificar
        
 verificaVencedor:
- 	MOV R4, A
- 	MOV R5, #01
+ 	MOV R4, A	; guarda o número do jogador vencedor em R4 ("11" para o jogador 1 e "22" para o jogador 2)
+ 	MOV R5, #01	; guarda "1" no R5 para indicar que houve vitória
       	       
 atalhoFim:
  	RET
