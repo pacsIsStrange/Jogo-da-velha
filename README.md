@@ -1,5 +1,6 @@
 # Relatório final do projeto de Arquitetura de Computadores
 Lucas Roberto Boccia dos Santos (22.123.012-1)
+
 Pedro Alexandre Custódio Silva (22.123.049-3)
 ### Projeto: Jogo da Velha
 
