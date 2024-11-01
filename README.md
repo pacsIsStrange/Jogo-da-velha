@@ -36,6 +36,7 @@ Quando algum jogador vence a partida, o programa transforma o valor do registrad
 
 O código a seguir representa o funcionamento da etapa 1, os comentários explicam de maneira mais aprofundada o que cada linha de código faz e/ou representa:
 
+### Início do programa e tabuleiro
 ```
 ORG 0000
 MOV R3, #00h	; R3 vai ser usado como variável auxiliar pra guardar o 'input' do usuário no keypad
@@ -65,7 +66,9 @@ desenhaTabuleiro:	; desenha as "bordas" do tabuleiro
  	MOV 56h, #0FFh
  	MOV 57h, #0FFh
  	MOV 58h, #0FFh
-       
+```
+### Main Loop
+```       
 mainLoop:
  	ACALL leituraTeclado
  	JNB F0, mainLoop
@@ -87,6 +90,10 @@ mainLoop:
       ;	+----+----+----+
       ;	 col2 col1 col0
 
+```
+### Leitura do teclado e execução de jogadas
+
+```
 leituraTeclado:
  	CLR F0
 	MOV P0, #11111111b
@@ -171,7 +178,10 @@ teclaDois:	;[...] para a tecla 1
  	CJNE A, #0Bh, teclaUm	;[...] NAO foi 1
  	MOV R0, #25h
  	SJMP pintaCelula
-       
+
+```
+### "Pintar as celulas e trocar o jogador
+```
 pintaCelula:	; pinta o endereco da memoria correspondente ao input do jogador no teclado
  	MOV A, @R0	; move o valor que esta guardado na posicao correspondente ao input do jogador
  	CJNE A, #0, fim	; se o valor nao for 0 (ou seja, a posicao ja foi preenchida), retorna da funcao para receber outro input do usuario
@@ -189,6 +199,10 @@ trocaJogador:	; funcao que vai alternar entre o numero dos jogadores para "troca
 trocaParaJogador1:
 	MOV R7, #11h	; define o jogador da vez como o jogador 1
  	RET
+```
+### Procurando a vitória
+
+```
        
 procuraVitoria:
 ; ao final da execução dessa subrotina, R4 guardará o numero do jogador vencedor, caso haja um vencedor
@@ -331,11 +345,8 @@ verificaVencedor:
       	       
 atalhoFim:
  	RET
-
-; --- Mapeamento de Hardware (8051) ---
-    RS      equ     P1.3    ;Reg Select ligado em P1.3
-    EN      equ     P1.2    ;Enable ligado em P1.2
 ```
+
 # Etapa 2 - LCD e LEDs
 
 A segunda etapa consiste na implementação dos recursos de LCD e LEDs do Edsim51, que utiliza os códigos disponibilizados em aula para "printar" uma mensagem no LCD e duas funções que determinam qual mensagem será printada.
@@ -347,6 +358,10 @@ Para tal, assim que uma vitória é encontrada pelo loop da Etapa 1, modificando
 O código a seguir representa o funcionamento da etapa 1, os comentários explicam de maneira mais aprofundada o que cada linha de código faz e/ou representa:
 
 ```
+; --- Mapeamento de Hardware (8051) ---
+    RS      equ     P1.3    ;Reg Select ligado em P1.3
+    EN      equ     P1.2    ;Enable ligado em P1.2
+
 START:
 	acall lcd_init
 	mov A, #04h
