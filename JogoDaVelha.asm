@@ -129,7 +129,7 @@ teclaTres:	;[...] para a tecla 2
  	SJMP pintaCelula
        
 teclaDois:	;[...] para a tecla 1
- 	CJNE A, #0Bh, teclaUm	;[...] NAO foi 1
+ 	;CJNE A, #0Bh, teclaUm	;[...] NAO foi 1
  	MOV R0, #25h
  	SJMP pintaCelula
        
