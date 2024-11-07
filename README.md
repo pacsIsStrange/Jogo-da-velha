@@ -1,7 +1,11 @@
 # Relatório final do projeto de Arquitetura de Computadores
+
+### Autores
+
 Lucas Roberto Boccia dos Santos (22.123.012-1)
 
 Pedro Alexandre Custódio Silva (22.123.049-3)
+
 ### Projeto: Jogo da Velha
 
 # Introdução
@@ -23,12 +27,19 @@ A primeira etapa de desenvolvimento consistiu na programação da lógica do jog
 Para isso, utilizamos a seguinte lógica:
 
 R1 - O registrador R1 funciona como um "ponteiro" que diz qual célula do tabuleiro está sendo verificada
+
 R2 - O registrador R2 serve como um iterador pra percorrer todo o tabuleiro
+
 R4 - O registrador R4 guarda qual dos dois jogadores venceu a partida
+
 R5 - O registrador R5 é um registrador booleano que altera seu valor para 1 quando algum jogador vence o jogo ou quando ocorre empate
+
 R6 - O registrador R6 é utilizado como variável auxiliar pra guardar o 'input' do usuário no keypad
+
 R7 - O registrador R7 vai ser usado pra "pintar" o tabuleiro de acordo com o jogador]
+
 P0 - "Reseta" o teclado para o estado inicial
+
 P1 - Mapeamento de Hardware do 8051
 
 O jogo funciona em um loop que, a cada jogada, procura se algum jogador venceu a partida, caso nenhuma condição de vitória tenha sido alcançada, o jogo prossegue para o turno do próximo jogador, e assim sucessivamente, também havendo funções que "pintam" as células do tabuleiro e que realizam a leitura do teclado.
@@ -36,7 +47,7 @@ Quando algum jogador vence a partida, o programa transforma o valor do registrad
 
 O código a seguir representa o funcionamento da etapa 1, os comentários explicam de maneira mais aprofundada o que cada linha de código faz e/ou representa:
 
-### Início do programa e tabuleiro
+### Tabuleiro
 ```
 ORG 0000
 MOV R3, #00h	; R3 vai ser usado como variável auxiliar pra guardar o 'input' do usuário no keypad
@@ -180,7 +191,7 @@ teclaDois:	;[...] para a tecla 1
  	SJMP pintaCelula
 
 ```
-### "Pintar as celulas e trocar o jogador
+### Pintar as celulas e trocar o jogador
 ```
 pintaCelula:	; pinta o endereco da memoria correspondente ao input do jogador no teclado
  	MOV A, @R0	; move o valor que esta guardado na posicao correspondente ao input do jogador
@@ -351,8 +362,11 @@ atalhoFim:
 
 A segunda etapa consiste na implementação dos recursos de LCD e LEDs do Edsim51, que utiliza os códigos disponibilizados em aula para "printar" uma mensagem no LCD e duas funções que determinam qual mensagem será printada.
 As duas opções de mensagem são:
+
 "Vitória - Jogador 1"
+
 "Vitória - Jogador 2"
+
 Para tal, assim que uma vitória é encontrada pelo loop da Etapa 1, modificando o valor do registrador R5 para 1, inicia-se a sequência Start no código que exibe no display LCD a mensagem "Vitória", e um laço condicional verifica o valor do registrador R4 atrás de qual jogador venceu a partida. O valor encontrado na verificação determina qual função do programa será utilizada para printar o restante da mensagem.
 
 O código a seguir representa o funcionamento da etapa 1, os comentários explicam de maneira mais aprofundada o que cada linha de código faz e/ou representa:
@@ -608,11 +622,17 @@ show22:
 
 # Fotos da plataforma e do funcionamento do programa
 
+### Edsim51
+
 ![image](https://github.com/user-attachments/assets/d8935281-3bad-4b20-8e76-a981ae028b48)
+
+### Exemplo de jogo
 
 ![image](https://github.com/user-attachments/assets/82ae0f4c-98d8-42d6-878a-85380d63648f)
 
-![image](https://github.com/user-attachments/assets/5a8be17a-2214-499a-95df-fbd9d085d1cb) (Versão um pouco mais antiga)
+### Exemplo de mensagem (versão um pouco mais antiga)
+
+![image](https://github.com/user-attachments/assets/5a8be17a-2214-499a-95df-fbd9d085d1cb)
 
 # Fluxograma
 
@@ -683,6 +703,7 @@ graph TD;
     sendCharacter-->delay;
     posicionaCursor-->delay;
     retornaCursor-->delay;
+    delay-->START
     displayValue-->sendCharacter;
     displayValue-->show22;
     show22-->sendCharacter;
