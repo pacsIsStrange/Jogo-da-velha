@@ -1,4 +1,6 @@
 ORG 0000
+
+MOV R5, #00h	; R5 vai ser usado como variável booleana para dizer se há ou não vitória no tabuleiro
 MOV R6, #00h	; R6 vai ser usado como variável auxiliar pra guardar o 'input' do usuário no keypad
 MOV R1, #14h	; R1 e um "ponteiro" que diz qual célula do tabuleiro está sendo verificada
 MOV R2, #45h	; R2 serve como um iterador pra percorrer todo o tabuleiro
