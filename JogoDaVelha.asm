@@ -303,29 +303,55 @@ atalhoFim:
 
 
 START:
-	acall lcd_init
-	mov A, #04h
-	ACALL posicionaCursor 
-	MOV A, #'V'
-	ACALL sendCharacter	; send data in A to LCD module
-	MOV A, #'i'
-	ACALL sendCharacter	; send data in A to LCD module
-	MOV A, #'t'
-	ACALL sendCharacter	; send data in A to LCD module
-	MOV A, #'o'
-	ACALL sendCharacter	
-	MOV A, #'r'
-	ACALL sendCharacter	
-	MOV A, #'i'
-	ACALL sendCharacter
-	MOV A, #'a'
-	ACALL sendCharacter
-	MOV A, #' '
-	ACALL sendCharacter		
-	MOV A, R4
-	ACALL displayValue		
-	ACALL retornaCursor
-	JMP $
+    acall lcd_init               ; Inicializa o display LCD
+
+    ; Exibe "Vitória" na primeira linha
+    MOV A, #04h                  ; Endereço da primeira linha (0x00)
+    ACALL posicionaCursor         ; Posiciona o cursor na primeira linha
+    MOV A, #'V'
+    ACALL sendCharacter          ; Envia 'V' para o LCD
+    MOV A, #'i'
+    ACALL sendCharacter          ; Envia 'i' para o LCD
+    MOV A, #'t'
+    ACALL sendCharacter          ; Envia 't' para o LCD
+    MOV A, #'o'
+    ACALL sendCharacter          ; Envia 'o' para o LCD
+    MOV A, #'r'
+    ACALL sendCharacter          ; Envia 'r' para o LCD
+    MOV A, #'i'
+    ACALL sendCharacter          ; Envia 'i' para o LCD
+    MOV A, #'a'
+    ACALL sendCharacter          ; Envia 'a' para o LCD
+    MOV A, #' '
+    ACALL sendCharacter          ; Envia espaço para o LCD
+              ; Exibe o valor armazenado em R4 (por exemplo, 11 ou 22)
+    
+    ; Exibe "Ganhou!" na segunda linha
+    acall lcd_init
+	  MOV A, #44h
+    ACALL posicionaCursor        
+    MOV A, #'J'
+    ACALL sendCharacter         
+    MOV A, #'o'
+    ACALL sendCharacter 
+	  MOV A, #'g'        
+    ACALL sendCharacter          
+    MOV A, #'a'
+    ACALL sendCharacter          
+    MOV A, #'d'
+    ACALL sendCharacter   
+    MOV A, #'o'
+    ACALL sendCharacter          
+    MOV A, #'r'
+    ACALL sendCharacter 
+    MOV A, #' '
+	  ACALL sendCharacter
+	  MOV A, R4
+	  ACALL displayValue
+		ACALL retornaCursor
+    JMP $
+
+
 
 
 
