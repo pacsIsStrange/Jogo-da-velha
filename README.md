@@ -81,14 +81,21 @@ desenhaTabuleiro:	; desenha as "bordas" do tabuleiro
 ### Main Loop
 ```       
 mainLoop:
+	; Primeiro, o programa verifica o input do usuáio através do teclado matricial
  	ACALL leituraTeclado
+	; Se nao houve input do usuário, volta para o início do laço para ler o teclado novamente
  	JNB F0, mainLoop
+	; Se houve input, vai executar a jogada correspondente à tecla pressionada pelo usuário
  	ACALL executaJogada
+	; Depois de executar a jogada, o programa vai verificar se há vitória de algum jogador no tabuleiro
 	ACALL procuraVitoria
+	; O registrador R5 é utilizado como variável booleana pela função procuraVitoria ("1" = sim, "0" = não)
 	MOV A, R5
+	; Quando não há um vencedor, o laço de repetição é executado novamente
 	CJNE A, #01, mainLoop
 	ACALL START
  	SJMP mainLoop
+
 
       ;	+----+----+----+
       ;	| 11 | 10 |  9 |	linha3
